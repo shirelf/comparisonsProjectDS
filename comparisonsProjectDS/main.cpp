@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include "List.h"
-
+#include "Selection.h"
 #include <time.h>
-
 
 using namespace std;
 
@@ -12,6 +11,13 @@ Student** getData(int& size, long& val);
 int NaivePrint(Student** arr, int n, int k);
 int insertSortedList(List *studentList, Student *student);
 void printList(ListNode* node);
+void BSTPrint(Student** studentsArray, int n, int k);
+void PrintAllPepoleBelowID(vector<Student> students, long IDToCompare);
+void PrintBySort(Student** studentsArray, int n, int k);
+void QuickSort(Student** arr, int low, int high);
+Student** MakeCopy(Student** studentsArray, int size);
+int Partition(Student** arr, int left, int right);
+
 int main()
 {
 	srand(time(nullptr));
@@ -21,11 +27,14 @@ int main()
 	cin.ignore();
 
 	Student** arr = getData(size, val);
-	//Selection selection(size,arr,val);
+	Selection selection(size,arr,val);
    // selection.selectHeap();     //selectHeap
    // selection.RandSelection();  //RandSelection
    // selection.BST();            //BST
+	BSTPrint(arr, size, val);
+	PrintBySort(arr, size, val);
 	int counter = NaivePrint(arr, size, val);
+	PrintBySort(arr, size, val);
 	cout << counter << endl;
 	FreeArray(arr, size);
 	system("pause");
@@ -93,6 +102,7 @@ int NaivePrint(Student** arr, int n, int k)
 
 	return counter;
 }
+
 int insertSortedList(List* studentList, Student* student)
 {
 	int counter = 0;
@@ -139,4 +149,88 @@ void printList(ListNode* node) //Function to print the list forwards
 		cout << curr->getStudent()->getId() << " " << curr->getStudent()->getFirstName() << " " << curr->getStudent()->getLastName() << endl; //Print out the data of current
 		curr = curr->getNext(); //Move one value along in the list
 	}
+}
+
+void BSTPrint(Student** studentsArray, int n, int k) {
+
+	int numOfCompares = 0;
+	BSTree * peopleBinarySearchTree = new BSTree();
+
+	for (int i = 0; i < n; i++) {
+		peopleBinarySearchTree->Insert(studentsArray[i]->getId(), *studentsArray[i], numOfCompares);
+	}
+
+	vector<Student> PeopleInOrder;
+	peopleBinarySearchTree->Inorder(PeopleInOrder);
+
+	//Print(3, &PeopleInOrder[valueNumber  - 1]);
+	PrintAllPepoleBelowID(PeopleInOrder, k);
+}
+
+void PrintAllPepoleBelowID(vector<Student> students, long IDToCompare) {
+	vector<Student>::iterator ptr = students.begin();
+
+	while (ptr->getId() <= IDToCompare) {
+		cout << ptr->getId() << " " << ptr->getFirstName() << " " << ptr->getLastName() << endl;
+		ptr++;
+	}
+}
+
+void PrintAllPepoleBelowID(Student ** students, int size, long IDToCompare) {
+
+	for (int i = 0; i < size ; i++) {
+		if (students[i]->getId() > IDToCompare) {
+			break;
+		}
+
+		cout << students[i]->getId() << " " << students[i]->getFirstName() << " " << students[i]->getLastName() << endl;
+	}
+}
+
+void PrintBySort(Student** studentsArray, int n, int k) {
+	Student ** temp = MakeCopy(studentsArray, n);
+	QuickSort(temp, 0, n - 1);
+//	vector<Student> students(*temp, *(temp + n));
+	PrintAllPepoleBelowID(temp, n, k);
+}
+
+int Partition(Student** arr, int left, int right)
+{
+	Student* pivot = arr[right]; // pivot
+	int i = left;
+
+	for (int j = left; j < right; j++)
+	{
+		// If current element is smaller than pivot
+		if (*arr[j] < *pivot)
+		{
+			swap(arr[i], arr[j]);
+			i++; // increment index of next place for smaller values
+		}
+		//numOfCompares++;
+	}
+		(arr[i], arr[right]);
+	return (i);
+}
+
+void QuickSort(Student** arr, int low, int high)
+{
+	int pi;
+	if (low < high)
+	{
+		/* pi is partitioning index, arr[pi] is now
+		   at right place */
+		pi = Partition(arr, low, high);
+
+		QuickSort(arr, low, pi - 1);  // Before pi
+		QuickSort(arr, pi + 1, high); // After pi
+	}
+}
+
+Student** MakeCopy(Student** studentsArray, int size)
+{
+	Student** temp = new Student*[size];
+	for (int i = 0; i < size; i++)
+		temp[i] = studentsArray[i];
+	return temp;
 }

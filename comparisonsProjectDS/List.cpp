@@ -1,8 +1,4 @@
-
-
 #include "List.h"
-
-
 
 List::List()
 {
@@ -11,7 +7,6 @@ List::List()
 	size = 0;
 
 }
-
 
 List::~List()
 {
@@ -61,6 +56,7 @@ void List::insertAfter(ListNode* prevNode, Student * newStudent)
 	if (newNode->getNext() != NULL)
 		newNode->getNext()->setPrev(newNode);
 }
+
 void List::insertBefore(ListNode* currNode, Student * newStudent)
 {
 	//TODO: 

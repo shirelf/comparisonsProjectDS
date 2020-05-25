@@ -55,15 +55,15 @@ bool Student::isValidName(string i_Name) {
 	return !i_Name.empty();
 }
 
-//bool Student::operator>(const Student &other) const
-//{
-//	return (m_ID > other.m_ID);
-//}
-//
-//bool Student::operator<(const Student &other) const
-//{
-//	return (m_ID < other.m_ID);
-//}
+bool Student::operator>(const Student &other) const
+{
+	return (m_ID > other.m_ID);
+}
+
+bool Student::operator<(const Student &other) const
+{
+	return (m_ID < other.m_ID);
+}
 
 const Student& Student::operator=(const Student &other)
 {
