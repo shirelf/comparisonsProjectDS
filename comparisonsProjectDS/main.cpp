@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <iostream>
 #include "List.h"
-#include "Selection.h"
 #include <time.h>
+#include <vector>
+#include "BSTree.h"
 
 using namespace std;
 
@@ -13,13 +14,14 @@ int insertSortedList(List *studentList, Student *student);
 void printList(ListNode* node);
 void BSTPrint(Student** studentsArray, int n, int k);
 void PrintAllPepoleBelowID(vector<Student> students, long IDToCompare);
-void PrintBySort(Student** studentsArray, int n, int k);
-void QuickSort(Student** arr, int low, int high);
+void PrintBySort(Student** studentsArray, int n, long k);
+void QuickSort(Student** arr, int low, int high, int &numOfCompares);
 Student** MakeCopy(Student** studentsArray, int size);
-int Partition(Student** arr, int left, int right);
+int Partition(Student** arr, int left, int right, int &numOfCompares);
 
 int main()
 {
+	srand(time(nullptr));
 	srand(time(nullptr));
 	int size;
 	long val;
@@ -27,14 +29,12 @@ int main()
 	cin.ignore();
 
 	Student** arr = getData(size, val);
-	Selection selection(size,arr,val);
-   // selection.selectHeap();     //selectHeap
-   // selection.RandSelection();  //RandSelection
-   // selection.BST();            //BST
+	cout << "BSTPrint:" << endl;
 	BSTPrint(arr, size, val);
+	cout << "PrintBySort:" << endl;
 	PrintBySort(arr, size, val);
+	cout << "NaivePrint:" << endl;
 	int counter = NaivePrint(arr, size, val);
-	PrintBySort(arr, size, val);
 	cout << counter << endl;
 	FreeArray(arr, size);
 	system("pause");
@@ -163,8 +163,8 @@ void BSTPrint(Student** studentsArray, int n, int k) {
 	vector<Student> PeopleInOrder;
 	peopleBinarySearchTree->Inorder(PeopleInOrder);
 
-	//Print(3, &PeopleInOrder[valueNumber  - 1]);
 	PrintAllPepoleBelowID(PeopleInOrder, k);
+	cout << "Number of compares made by BSTPrint is: " << numOfCompares << endl;
 }
 
 void PrintAllPepoleBelowID(vector<Student> students, long IDToCompare) {
@@ -187,43 +187,41 @@ void PrintAllPepoleBelowID(Student ** students, int size, long IDToCompare) {
 	}
 }
 
-void PrintBySort(Student** studentsArray, int n, int k) {
+void PrintBySort(Student** studentsArray, int n, long k) {
 	Student ** temp = MakeCopy(studentsArray, n);
-	QuickSort(temp, 0, n - 1);
-//	vector<Student> students(*temp, *(temp + n));
+	int numOfCompares = 0;
+	QuickSort(temp, 0, n - 1, numOfCompares);
 	PrintAllPepoleBelowID(temp, n, k);
+	cout << "Number of compares made by PrintBySort is: " << numOfCompares << endl;
 }
 
-int Partition(Student** arr, int left, int right)
+int Partition(Student** arr, int left, int right, int &numOfCompares)
 {
-	Student* pivot = arr[right]; // pivot
+	Student* pivot = arr[right];
 	int i = left;
 
 	for (int j = left; j < right; j++)
 	{
-		// If current element is smaller than pivot
 		if (*arr[j] < *pivot)
 		{
 			swap(arr[i], arr[j]);
-			i++; // increment index of next place for smaller values
+			i++; 
 		}
-		//numOfCompares++;
+		numOfCompares++;
 	}
-		(arr[i], arr[right]);
+	swap(arr[i], arr[right]);
 	return (i);
 }
 
-void QuickSort(Student** arr, int low, int high)
+void QuickSort(Student** arr, int low, int high, int &numOfCompares)
 {
 	int pi;
 	if (low < high)
 	{
-		/* pi is partitioning index, arr[pi] is now
-		   at right place */
-		pi = Partition(arr, low, high);
+		pi = Partition(arr, low, high, numOfCompares);
 
-		QuickSort(arr, low, pi - 1);  // Before pi
-		QuickSort(arr, pi + 1, high); // After pi
+		QuickSort(arr, low, pi - 1, numOfCompares);
+		QuickSort(arr, pi + 1, high, numOfCompares);
 	}
 }
 

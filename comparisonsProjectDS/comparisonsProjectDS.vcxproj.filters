@@ -24,12 +24,6 @@
     <ClInclude Include="BSTreeNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Heap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Selection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Student.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -44,16 +38,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Selection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BSTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BSTreeNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Heap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Student.cpp">
