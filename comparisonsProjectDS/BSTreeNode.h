@@ -25,8 +25,8 @@ public:
 		: m_Key{ i_Key }, m_Data{ i_Data }, m_Left{ i_Left }, m_Right{ i_Right }{}
 	~BSTreeNode() {
 
-		if (m_Left != nullptr) delete m_Left;
-		if (m_Right != nullptr) delete m_Right;
+		/*if (m_Left != NULL) delete m_Left;
+		if (m_Right != NULL) delete m_Right;*/
 	}
 	KeyType Key() { return m_Key; }
 	DataType Data() { return m_Data; }

@@ -56,11 +56,11 @@ int main()
 	cin.ignore();
 
 	Student** arr = getData(size, val);
-
-	cout << "NaivePrint:" << endl;
-	int NaivePrintCounter = NaivePrint(arr, size, val);
 	cout << "BSTPrint:" << endl;
 	int BSTPrintCounter = BSTPrint(arr, size, val);
+	cout << "NaivePrint:" << endl;
+	int NaivePrintCounter = NaivePrint(arr, size, val);
+
 	cout << "PrintBySort:" << endl;
 	int PrintBySortCounter = PrintBySort(arr, size, val);
 
@@ -131,7 +131,7 @@ int NaivePrint(Student** arr, int n, int k)
 		counter++;
 	}
 	printList(studentList->getHead());
-	studentList->deleteList();
+	//studentList->deleteList();
 	delete studentList;
 	return counter;
 }
@@ -203,11 +203,14 @@ int BSTPrint(Student** studentsArray, int n, int k) {
 
 int PrintAllPepoleBelowID(vector<Student> students, long IDToCompare) {
 	vector<Student>::iterator ptr = students.begin();
+	vector<Student>::iterator ptr_end = students.end();
 	int numOfCompares = 0;
-	while (ptr->getId() <= IDToCompare) {
+	while (ptr->getId() <= IDToCompare ) {
 		cout << ptr->getId() << " " << ptr->getFirstName() << " " << ptr->getLastName() << endl;
 		ptr++;
 		numOfCompares++;
+		if (ptr == ptr_end)
+			return numOfCompares;
 	}
 	return numOfCompares;
 }
@@ -228,7 +231,7 @@ int PrintBySort(Student** studentsArray, int n, long k) {
 	int numOfCompares = 0;
 	QuickSort(temp, 0, n - 1, numOfCompares);
 	PrintAllPepoleBelowID(temp, n, k);
-	FreeArray(temp,n);
+	
 	return numOfCompares;
 }
 

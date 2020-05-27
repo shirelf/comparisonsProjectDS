@@ -9,6 +9,13 @@ Student::Student(string i_ID, string i_FirstName, string i_LastName)
 	if (!isValidName(i_LastName)) throw Bad_LastName;
 }
 
+//Student::Student(string i_ID, string i_Name)
+//{
+//    if (!isValidID(i_ID)) throw Bad_ID;
+//    else m_ID = stoi(i_ID);
+//    if (!isValidName(i_Name)) throw Bad_Name;
+//    else m_Name = i_Name;
+//}
 
 Student::Student(ifstream& in)
 {
@@ -18,6 +25,7 @@ Student::Student(ifstream& in)
 Student::Student(const Student& other)
 {
 	m_ID = other.m_ID;
+	//	m_Name = other.m_Name;
 	m_FirstName = other.m_FirstName;
 	m_LastName = other.m_LastName;
 }
@@ -30,6 +38,8 @@ Student::Student(Student&& other)
 bool Student::isValidID(string i_ID) {
 
 	bool result = true;
+
+	//	if (i_ID.length() != 9) result = false;
 
 	for (char ch : i_ID)
 	{
@@ -45,6 +55,10 @@ bool Student::isValidName(string i_Name) {
 	return !i_Name.empty();
 }
 
+bool Student::operator>(const Student &other) const
+{
+	return (m_ID > other.m_ID);
+}
 
 bool Student::operator<(const Student &other) const
 {
@@ -56,6 +70,7 @@ const Student& Student::operator=(const Student &other)
 	if (this != &other)
 	{
 		m_ID = other.m_ID;
+		//        m_Name = other.m_Name;
 		m_FirstName = other.m_FirstName;
 		m_LastName = other.m_LastName;
 	}
@@ -68,4 +83,9 @@ istream& operator>>(istream &in, Student &p)
 	return in;
 }
 
-
+void Student::Swap(Student** a, Student** b)
+{
+	Student* temp = *a;
+	*a = *b;
+	*b = temp;
+}

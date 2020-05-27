@@ -16,12 +16,14 @@ void BSTree::deleteTreeRec(BSTreeNode* node)
 	if (node == NULL) return;
 
 	/* first delete both subtrees */
-	deleteTreeRec(node->GetLeft());
-	deleteTreeRec(node->GetRight());
+	if(node->GetLeft() != NULL)
+		deleteTreeRec(node->GetLeft());
+	if (node->GetRight() != NULL)
+		deleteTreeRec(node->GetRight());
 
 	/* then delete the node */
-
-	delete node;
+	if (node != NULL)
+		delete node;
 }
 
 bool BSTree::isEmpty()

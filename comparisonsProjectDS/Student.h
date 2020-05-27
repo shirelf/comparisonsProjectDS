@@ -29,9 +29,10 @@ public:
 	string getFirstName() { return m_FirstName; }
 	string getLastName() { return m_LastName; }
 	bool operator<(const Student& other) const;
+	bool operator>(const Student& other) const;
 	const Student& operator=(const Student& other);
 	friend istream& operator>>(istream& in, Student& p);
-
+	static void Swap(Student** a, Student** b);
 
 private:
 	bool isValidID(string i_ID);
