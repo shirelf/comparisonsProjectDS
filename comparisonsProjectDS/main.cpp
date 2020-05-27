@@ -1,22 +1,49 @@
+﻿/*In this program we get the details of a certain number of students, for each student we get an ID number, first name, last name. 
+first the user enters the amount of students whose details he is going to write, after writing this number and students as that number, he writes a Certain value (K).
+The program sorts the students data according to their IDs and prints all students whose ID is smaller than the chosen K, in three different ways according to the following functions :
+1. NaivePrint
+2. BSTPrint
+3. PrintBySort
+You can see their description below.
+In addition, each function counts the number of comparisons it has had to make in order to do this.
+Output of the program: 
+1. Print student data whose ID is less than K 3 times(each function also prints student data sorted to the same K value)
+2. The number of comparisons each program had to make in order to sort and print the result.
+*/
+
 #include <stdlib.h>
 #include <iostream>
 #include "List.h"
 #include <time.h>
-#include <vector>
+
 #include "BSTree.h"
 
 using namespace std;
 
-void FreeArray(Student** arr, int size);
-Student** getData(int& size, long& val);
+void FreeArray(Student** arr, int size);// Deletes the array of students we have allocated
+Student** getData(int& size, long& val); // Receives the information from the user
+
+//In the function below we will create a list that contains all students whose IDs are less than the K value we received in the input, 
+//this function will call the function that will print the new list 
+//and return the number of comparisons made to create this list
 int NaivePrint(Student** arr, int n, int k);
+
+//This function Receives the list and a student and inserts it into the list according to its ID value
 int insertSortedList(List *studentList, Student *student);
-void printList(ListNode* node);
-void BSTPrint(Student** studentsArray, int n, int k);
-void PrintAllPepoleBelowID(vector<Student> students, long IDToCompare);
-void PrintBySort(Student** studentsArray, int n, long k);
+void printList(ListNode* node);// prints the list, we use it in the NaivePrint function
+
+//In the function below we will create a binary search tree that contains all of the students
+//and prints the tree Inorder until the ID is greater than or equal to k.
+//and return the number of comparisons made to create this tree and to print the students
+int BSTPrint(Student** studentsArray, int n, int k);
+//We pass all the tree values ​​to a vector in Inorder
+// print all the students whose IDs are less than the K value
+int PrintAllPepoleBelowID(vector<Student> students, long IDToCompare);
+//The function below sorts the array in quick sort 
+//Then prints the Students details until it encounters a ID greater than or equal to k.
+int PrintBySort(Student** studentsArray, int n, long k);
 void QuickSort(Student** arr, int low, int high, int &numOfCompares);
-Student** MakeCopy(Student** studentsArray, int size);
+Student** MakeCopy(Student** studentsArray, int size);// make a copy of the student array
 int Partition(Student** arr, int left, int right, int &numOfCompares);
 
 int main()
@@ -29,13 +56,18 @@ int main()
 	cin.ignore();
 
 	Student** arr = getData(size, val);
-	cout << "BSTPrint:" << endl;
-	BSTPrint(arr, size, val);
-	cout << "PrintBySort:" << endl;
-	PrintBySort(arr, size, val);
+
 	cout << "NaivePrint:" << endl;
-	int counter = NaivePrint(arr, size, val);
-	cout << counter << endl;
+	int NaivePrintCounter = NaivePrint(arr, size, val);
+	cout << "BSTPrint:" << endl;
+	int BSTPrintCounter = BSTPrint(arr, size, val);
+	cout << "PrintBySort:" << endl;
+	int PrintBySortCounter = PrintBySort(arr, size, val);
+
+	cout << "NaivePrint: " << NaivePrintCounter << " comparisons" << endl;
+	cout << "BSTPrint: " << BSTPrintCounter << " comparisons" << endl;
+	cout << "PrintBySort: " << PrintBySortCounter << " comparisons" << endl;
+
 	FreeArray(arr, size);
 	system("pause");
 }
@@ -59,7 +91,7 @@ Student** getData(int& size, long& val)
 			{
 				for (int j = 0; j < i; j++)
 				{
-					if (PArray[j]->getId() == stol(id))
+					if (PArray[j]->getId() == stol(id))//Check that the user does not put in certificates
 					{
 						string ex = "bad";
 						throw ex;
@@ -99,7 +131,8 @@ int NaivePrint(Student** arr, int n, int k)
 		counter++;
 	}
 	printList(studentList->getHead());
-
+	studentList->deleteList();
+	delete studentList;
 	return counter;
 }
 
@@ -151,7 +184,7 @@ void printList(ListNode* node) //Function to print the list forwards
 	}
 }
 
-void BSTPrint(Student** studentsArray, int n, int k) {
+int BSTPrint(Student** studentsArray, int n, int k) {
 
 	int numOfCompares = 0;
 	BSTree * peopleBinarySearchTree = new BSTree();
@@ -163,22 +196,25 @@ void BSTPrint(Student** studentsArray, int n, int k) {
 	vector<Student> PeopleInOrder;
 	peopleBinarySearchTree->Inorder(PeopleInOrder);
 
-	PrintAllPepoleBelowID(PeopleInOrder, k);
-	cout << "Number of compares made by BSTPrint is: " << numOfCompares << endl;
+	numOfCompares = numOfCompares + PrintAllPepoleBelowID(PeopleInOrder, k);
+	peopleBinarySearchTree->makeEmpty();
+	return numOfCompares;
 }
 
-void PrintAllPepoleBelowID(vector<Student> students, long IDToCompare) {
+int PrintAllPepoleBelowID(vector<Student> students, long IDToCompare) {
 	vector<Student>::iterator ptr = students.begin();
-
+	int numOfCompares = 0;
 	while (ptr->getId() <= IDToCompare) {
 		cout << ptr->getId() << " " << ptr->getFirstName() << " " << ptr->getLastName() << endl;
 		ptr++;
+		numOfCompares++;
 	}
+	return numOfCompares;
 }
 
 void PrintAllPepoleBelowID(Student ** students, int size, long IDToCompare) {
 
-	for (int i = 0; i < size ; i++) {
+	for (int i = 0; i < size; i++) {
 		if (students[i]->getId() > IDToCompare) {
 			break;
 		}
@@ -187,12 +223,13 @@ void PrintAllPepoleBelowID(Student ** students, int size, long IDToCompare) {
 	}
 }
 
-void PrintBySort(Student** studentsArray, int n, long k) {
+int PrintBySort(Student** studentsArray, int n, long k) {
 	Student ** temp = MakeCopy(studentsArray, n);
 	int numOfCompares = 0;
 	QuickSort(temp, 0, n - 1, numOfCompares);
 	PrintAllPepoleBelowID(temp, n, k);
-	cout << "Number of compares made by PrintBySort is: " << numOfCompares << endl;
+	FreeArray(temp,n);
+	return numOfCompares;
 }
 
 int Partition(Student** arr, int left, int right, int &numOfCompares)
@@ -205,7 +242,7 @@ int Partition(Student** arr, int left, int right, int &numOfCompares)
 		if (*arr[j] < *pivot)
 		{
 			swap(arr[i], arr[j]);
-			i++; 
+			i++;
 		}
 		numOfCompares++;
 	}

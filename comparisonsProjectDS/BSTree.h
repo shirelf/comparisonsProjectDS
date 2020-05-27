@@ -18,12 +18,14 @@ public:
 	}
 	BSTreeNode * Find(KeyType i_Key);
 	void Insert(KeyType i_Key, DataType i_Data, int &NumComp);
-	void Delete(KeyType i_Key, DataType i_Data);
-	KeyType Min();
-	KeyType Max();
+	
 	void Inorder(vector<DataType> & i_ResultVector);
-	void Preorder(vector<DataType> & i_ResultVector);
-	void Postorder(vector<DataType> & i_ResultVector);
+	void deleteTreeRec(BSTreeNode * node);
+	void makeEmpty();
+	bool isEmpty();
+	void DeleteNodeInBST(int Key);
+	BSTreeNode * DeleteNodeInBSTRec(BSTreeNode * root, int Key);
+	BSTreeNode * FindMax(BSTreeNode * root);
 
 };
 

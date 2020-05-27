@@ -87,3 +87,16 @@ void List::insertBefore(ListNode* currNode, Student * newStudent)
 	}
 
 }
+
+void List::deleteList()
+{
+	ListNode *curr=head;
+	ListNode *temp;
+	while (curr != NULL)
+	{
+		temp = curr->getNext();
+		delete curr;
+		curr = temp;
+	}
+	size = 0;
+}

@@ -19,7 +19,7 @@ public:
 	//void setTail(ListNode *newTail);
 	void insertAfter(ListNode * prevNode, Student * newStudent);
 	void insertBefore(ListNode* currNode, Student * newStudent);
-
+	void deleteList();
 };
 
 #endif
