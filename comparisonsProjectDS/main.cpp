@@ -39,6 +39,7 @@ int BSTPrint(Student** studentsArray, int n, int k);
 //We pass all the tree values ​​to a vector in Inorder
 // print all the students whose IDs are less than the K value
 int PrintAllPepoleBelowID(vector<Student> students, long IDToCompare);
+void PrintAllPepoleBelowID(Student ** students, int size, long IDToCompare, int & numOfCompares);
 //The function below sorts the array in quick sort 
 //Then prints the Students details until it encounters a ID greater than or equal to k.
 int PrintBySort(Student** studentsArray, int n, long k);
@@ -205,7 +206,7 @@ int PrintAllPepoleBelowID(vector<Student> students, long IDToCompare) {
 	vector<Student>::iterator ptr = students.begin();
 	vector<Student>::iterator ptr_end = students.end();
 	int numOfCompares = 0;
-	while (ptr->getId() <= IDToCompare ) {
+	while (ptr->getId() < IDToCompare ) {
 		cout << ptr->getId() << " " << ptr->getFirstName() << " " << ptr->getLastName() << endl;
 		ptr++;
 		numOfCompares++;
@@ -215,13 +216,13 @@ int PrintAllPepoleBelowID(vector<Student> students, long IDToCompare) {
 	return numOfCompares;
 }
 
-void PrintAllPepoleBelowID(Student ** students, int size, long IDToCompare) {
+void PrintAllPepoleBelowID(Student ** students, int size, long IDToCompare, int &numOfCompares) {
 
 	for (int i = 0; i < size; i++) {
-		if (students[i]->getId() > IDToCompare) {
+		numOfCompares++;
+		if (students[i]->getId() >= IDToCompare) {
 			break;
 		}
-
 		cout << students[i]->getId() << " " << students[i]->getFirstName() << " " << students[i]->getLastName() << endl;
 	}
 }
@@ -230,7 +231,7 @@ int PrintBySort(Student** studentsArray, int n, long k) {
 	Student ** temp = MakeCopy(studentsArray, n);
 	int numOfCompares = 0;
 	QuickSort(temp, 0, n - 1, numOfCompares);
-	PrintAllPepoleBelowID(temp, n, k);
+	PrintAllPepoleBelowID(temp, n, k, numOfCompares);
 	
 	return numOfCompares;
 }

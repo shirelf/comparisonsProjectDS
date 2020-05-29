@@ -22,18 +22,9 @@ void List::setHead(ListNode * newHead)
 	this->head = newHead;
 }
 
-//ListNode * List::getTail()
-//{
-//	return tail;
-//}
 
-//void List::setTail(ListNode * newTail)
-//{
-//	this->tail = newTail;
-//}
 void List::insertAfter(ListNode* prevNode, Student * newStudent)
 {
-	//TODO: 
 	/*1. check if the given prev_node is NULL */
 	if (prevNode == NULL) {
 		printf("the given previous node cannot be NULL");
@@ -59,7 +50,7 @@ void List::insertAfter(ListNode* prevNode, Student * newStudent)
 
 void List::insertBefore(ListNode* currNode, Student * newStudent)
 {
-	//TODO: 
+	 
 	/*1. check if the given prev_node is NULL */
 	if (currNode == NULL) {
 		printf("the given previous node cannot be NULL");
@@ -88,15 +79,3 @@ void List::insertBefore(ListNode* currNode, Student * newStudent)
 
 }
 
-void List::deleteList()
-{
-	ListNode *curr=head;
-	ListNode *temp;
-	while (curr != NULL)
-	{
-		temp = curr->getNext();
-		delete curr;
-		curr = temp;
-	}
-	size = 0;
-}

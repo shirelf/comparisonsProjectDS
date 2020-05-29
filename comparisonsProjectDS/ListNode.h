@@ -12,7 +12,7 @@ class ListNode
 
 public:
 	ListNode(Student* student, ListNode* next, ListNode* prev);
-	~ListNode( );
+	~ListNode() {};
 
 
 	ListNode* getNext();

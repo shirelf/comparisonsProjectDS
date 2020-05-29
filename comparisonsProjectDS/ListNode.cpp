@@ -6,11 +6,6 @@ ListNode::ListNode(Student * student, ListNode * next, ListNode* prev) :student(
 	this->prev = prev;
 }
 
-ListNode::~ListNode()
-{
-	delete student;
-	// delete next?
-}
 
 ListNode* ListNode::getNext()
 {
